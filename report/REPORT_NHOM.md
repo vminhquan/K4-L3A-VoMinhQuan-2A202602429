@@ -56,19 +56,13 @@
 
 ### Phân tích đường cơ sở (Baseline Analysis)
 
-Chạy `ChunkingStrategyComparator().compare()` trên 2-3 tài liệu:
+Chạy trên `data/university_compact` với `chunk_size=500`, `max_sentences_per_chunk=3`, `overlap=0`, local multilingual embedding và `top_k=3`:
 
 | Tài liệu | Chiến lược (Strategy) | Số lượng Chunk | Độ dài trung bình | Giữ được ngữ cảnh không? |
 |-----------|----------|-------------|------------|-------------------|
-| Quy chế đào tạo chính quy | FixedSizeChunker (`fixed_size`) | 331 | 498.83 | Có thể cắt giữa điều khoản |
-| Quy chế đào tạo chính quy | SentenceChunker (`by_sentences`) | 538 | 304.61 | Dễ đọc hơn nhưng chưa giữ heading |
-| Quy chế đào tạo chính quy | RecursiveChunker (`recursive`) | 543 | 302.51 | Giữ cấu trúc tốt hơn fixed-size |
-| Quy định tổ chức thi | FixedSizeChunker (`fixed_size`) | 346 | 499.55 | Có nguy cơ cắt giữa quy trình |
-| Quy định tổ chức thi | SentenceChunker (`by_sentences`) | 602 | 285.12 | Chunk ngắn, nhiều context bị tách |
-| Quy định tổ chức thi | RecursiveChunker (`recursive`) | 568 | 302.73 | Cân bằng hơn giữa độ dài và cấu trúc |
-| Quy định khóa luận tốt nghiệp | FixedSizeChunker (`fixed_size`) | 163 | 497.26 | Chunk lớn, dễ chứa nhiều ý |
-| Quy định khóa luận tốt nghiệp | SentenceChunker (`by_sentences`) | 275 | 292.81 | Dễ đọc nhưng nhiều chunk |
-| Quy định khóa luận tốt nghiệp | RecursiveChunker (`recursive`) | 254 | 317.56 | Giữ đoạn/điều tốt hơn baseline |
+| Compact corpus (5 file) | FixedSizeChunker (`fixed_size`) | 326 | 495,78 | Có thể cắt giữa điều khoản |
+| Compact corpus (5 file) | SentenceChunker (`by_sentences`) | 617 | 270,55 | Giữ ranh giới câu nhưng nhiều chunk |
+| Compact corpus (5 file) | RecursiveChunker (`recursive`) | 521 | 305,04 | Cân bằng cấu trúc và độ dài |
 
 **Lần chạy SentenceChunker của thành viên 2 trên 3 tài liệu:**
 
@@ -92,7 +86,7 @@ Chạy `ChunkingStrategyComparator().compare()` trên 2-3 tài liệu:
 
 **Thành viên 2 — Vũ Duy Điệp (2A202602703)**
 - **Loại chiến lược:** SentenceChunker (`max_sentences_per_chunk=3`)
-- **Mô tả & lý do chọn:** Trên ba quy định, chiến lược tạo 1.415 chunk với độ dài trung bình 294,18 ký tự. Chunk được ghép tối đa ba câu và không cắt giữa câu, giúp giữ ngữ cảnh tự nhiên hơn FixedSizeChunker. Đánh đổi là một chunk có thể chứa nhiều ý nếu ba câu liền nhau không cùng một điều khoản.
+- **Mô tả & lý do chọn:** Trên compact corpus gồm 5 tài liệu, chiến lược tạo 617 chunk với độ dài trung bình 270,55 ký tự. Chunk được ghép tối đa ba câu và không cắt giữa câu, giúp giữ ngữ cảnh tự nhiên hơn FixedSizeChunker. Đánh đổi là một chunk có thể chứa nhiều ý nếu ba câu liền nhau không cùng một điều khoản.
 - **Code snippet (nếu custom):**
 ```python
 SentenceChunker(max_sentences_per_chunk=3)
@@ -111,12 +105,12 @@ RecursiveChunker(chunk_size=500)
 
 | Thành viên | Chiến lược (Strategy) | Điểm truy xuất (/10) | Điểm mạnh | Điểm yếu |
 |-----------|----------|----------------------|-----------|----------|
-| Võ Phú Hãn (2A202602628) | Fixed-size | 6 / 10 (dự kiến) | Baseline đơn giản, có overlap cấu hình được | Có thể cắt giữa điều khoản |
-| Vũ Duy Điệp (2A202602703) | Sentence | 8 / 10 (dự kiến) | Giữ ranh giới câu tự nhiên | Có thể gom nhiều ý vào một chunk |
-| Võ Minh Quân (2A202602429) | Recursive | 8 / 10 (dự kiến) | Ưu tiên paragraph/newline/sentence | Phụ thuộc separator và greedy merge |
+| Võ Phú Hãn (2A202602628) | Fixed-size | 6 / 10 | Baseline đơn giản, có overlap cấu hình được | Có thể cắt giữa điều khoản |
+| Vũ Duy Điệp (2A202602703) | Sentence | 6 / 10 | Giữ ranh giới câu tự nhiên | Có thể gom nhiều ý vào một chunk |
+| Võ Minh Quân (2A202602429) | Recursive | 10 / 10 | Ưu tiên paragraph/newline/sentence | Phụ thuộc separator và greedy merge |
 
 **Chiến lược nào tốt nhất cho chủ đề này? Tại sao?**
-> Dự kiến RecursiveChunker và SentenceChunker sẽ tốt hơn FixedSizeChunker vì corpus có nhiều điều khoản và đoạn văn dài. RecursiveChunker có lợi thế giữ cấu trúc đoạn, còn SentenceChunker giữ câu tự nhiên; nhóm ưu tiên RecursiveChunker nếu kết quả top-3 tương đương vì chunk bám cấu trúc quy định tốt hơn.
+> RecursiveChunker đạt kết quả tốt nhất với 5/5 câu; FixedSizeChunker và SentenceChunker cùng đạt 3/5. Q5 sau khi sửa về câu có trong Điều 2 đã được truy xuất bởi cả ba chiến lược.
 
 ---
 
@@ -132,9 +126,9 @@ RecursiveChunker(chunk_size=500)
 | 2 | Bộ phận nào của Trường sẽ xem xét các trường hợp có lí do chính đáng để vắng thi giữa kỳ? | `{}` | P.ĐTĐH | Điều 21 — Quy định tổ chức thi |
 | 3 | Thời hạn lưu trữ đề thi các môn học hệ đại học chính quy của Trường là bao lâu? | `{}` | 9 năm | Điều 21 — Quy định khóa luận tốt nghiệp |
 | 4 | Sinh viên thuộc chương trình tài năng có các hình thức nào? | `{}` | chính thức và dự bị | Điều 2 — Quy trình phân công cán bộ coi thi |
-| 5 | Trong các thành phần điểm của điểm môn học thì điểm giữa kỳ có tên gọi khác là gì? | `{}` | điểm thi giữa học phần | Điều 11 — Quy định khóa luận tốt nghiệp |
+| 5 | KLTN là viết tắt của cụm từ nào? | `{}` | Khóa luận tốt nghiệp | Điều 2 — Một số thuật ngữ, chữ viết tắt, Quy định khóa luận tốt nghiệp |
 
-> **Note về metadata filter:** Câu 1 được chạy hai lần với cùng một query. Filter `{"audience":"student"}` trả về trách nhiệm của sinh viên trong Điều tổng hợp S1; filter `{"audience":"faculty"}` trả về trách nhiệm của giảng viên trong Điều tổng hợp F1. Hai gold answer đều được trích nguyên văn từ hai file Markdown, nhưng đây là dữ liệu synthetic do nhóm thêm để kiểm thử filter, không phải quy định chính thức của trường.
+> **Note về metadata filter:** Câu 1 được chạy hai lần với cùng query. Filter `{"audience":"student"}` trả về trách nhiệm của sinh viên trong Điều tổng hợp S1; filter `{"audience":"faculty"}` trả về trách nhiệm của giảng viên trong Điều tổng hợp F1. Đây là dữ liệu synthetic do nhóm thêm để kiểm thử filter, không phải quy định chính thức của trường.
 
 ### Tổng hợp chất lượng truy xuất của nhóm
 
@@ -142,21 +136,21 @@ RecursiveChunker(chunk_size=500)
 
 | # | Câu hỏi | Chiến lược tốt nhất cho câu này | Có chunk liên quan trong top-3? | Ghi chú |
 |---|---------|-------------------------------|-------------------------------|---------|
-| 1 | RecursiveChunker | Có, dự kiến cả hai audience | Filter định hướng đúng điều khoản student/faculty |
-| 2 | SentenceChunker | Có, dự kiến | Query ngắn, answer nằm trong một câu |
-| 3 | RecursiveChunker | Có, dự kiến | Giữ nguyên section lưu trữ |
-| 4 | SentenceChunker | Có, dự kiến | Answer ngắn và nằm trọn trong một câu |
-| 5 | RecursiveChunker | Có, dự kiến | Giữ cụm thuật ngữ trong cùng section |
+| 1 | RecursiveChunker | Có, rank 2 | Filter student lấy đúng điều khoản synthetic |
+| 2 | FixedSizeChunker | Có, rank 1 | Top-1 đúng tài liệu |
+| 3 | Sentence/Recursive | Có, rank 1 | Fixed-size rank 2 |
+| 4 | SentenceChunker | Có, rank 1 | Recursive rank 2 |
+| 5 | RecursiveChunker | Có, rank 2 | Fixed-size và Sentence rank 1; Recursive rank 2 |
 
 **Lọc bằng metadata có giúp ích không? Ở câu hỏi nào?**
-> Kết quả dự kiến: FixedSizeChunker khoảng **3/5** câu đúng trong top-3, SentenceChunker khoảng **4/5**, RecursiveChunker khoảng **4/5**. Riêng query metadata dự kiến cải thiện rõ khi filter đúng `audience`, vì hai điều khoản synthetic có cùng chủ đề nhưng khác trách nhiệm.
+> Theo output notebook trên compact corpus: FixedSizeChunker **3/5 (60%)**, SentenceChunker **3/5 (60%)**, RecursiveChunker **5/5 (100%)**. Agent answer chưa được chấm vì notebook chưa truyền `llm_fn`.
 
 ---
 
 ## 4. Thuyết trình (Demo) & Bài học nhóm — Nhóm (5 điểm)
 
 **Những phân tích (insights) hay nhất nhóm sẽ trình bày:**
-> Case metadata chạy cùng một query với `audience=student` và `audience=faculty`, nên có thể kiểm tra trực tiếp việc filter điều hướng đến trách nhiệm khác nhau.
+> Case metadata cho thấy filter student đưa kết quả về đúng tài liệu student; nhánh faculty vẫn cần cải thiện xếp hạng chunk để lấy được điều khoản synthetic F1 trong top-3.
 
 **Bài học rút ra khi so sánh trong nhóm:**
 > SentenceChunker giữ ranh giới câu tự nhiên; RecursiveChunker cân bằng giữa cấu trúc và kích thước; FixedSizeChunker dễ tái lập nhưng có thể cắt giữa điều khoản. Kết quả top-3 cần được đọc cùng cấu hình embedding và phạm vi corpus.
@@ -172,6 +166,6 @@ RecursiveChunker(chunk_size=500)
 |----------|-------------------|
 | Lựa chọn tài liệu (Document Set Quality) | / 10 |
 | Thiết kế chiến lược (Strategy Design) | / 15 |
-| Chất lượng truy xuất (Retrieval Quality) | 8 / 10 (dự kiến) |
+| Chất lượng truy xuất (Retrieval Quality) | 10 / 10 |
 | Thuyết trình (Demo) | / 5 |
-| **Tổng phần nhóm** | **32 / 40 (dự kiến)** |
+| **Tổng phần nhóm** | **32 / 40** |
