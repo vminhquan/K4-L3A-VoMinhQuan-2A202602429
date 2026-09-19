@@ -1,0 +1,69 @@
+================================================================
+BENCHMARK RESULTS — Strategy: recursive
+Embedder: text-embedding-3-small
+Total corpus chunks: 2226
+================================================================
+
+--- [Query 1] (Hỏi quy trình & Lọc đối tượng) ---
+Câu hỏi: Khi sinh viên xin hoãn thi giữa kỳ, hồ sơ cần được xử lý như thế nào?
+Gold answer: Sinh viên có lý do chính đáng không thể dự thi giữa kỳ phải nộp đơn kèm minh chứng cho Phòng Đào tạo Đại học trong vòng 03 ngày kể từ ngày thi.
+File kỳ vọng: quy-che-dao-tao-chinh-quy
+Metadata filter: {'audience': 'student'}
+Top-3 retrieved chunks:
+  1. ✅ [MATCH] (Score: 0.6331) [quy-che-dao-tao-chinh-quy] -        Nếu trùng thời gian kiểm tra giữa kỳ: sinh viên được dùng điểm cuối kỳ thay thế điểm giữa kỳ. 3.   Nếu không muốn nhận điểm M hoặc muốn nhận điểm cao hơn điểm được cho the...
+  2.    (Score: 0.6311) [quy-dinh-to-chuc-thi] -        Nếu trùng thời gian kiểm tra giữa kỳ: sinh viên được dùng điểm cuối kỳ thay thế điểm giữa kỳ. 3.   Nếu không muốn nhận điểm M hoặc muốn nhận điểm cao hơn điểm được cho the...
+  3.    (Score: 0.6281) [quy-dinh-to-chuc-thi] Trong trường hợp sinh viên có lý do chính đáng (ốm đau, tai nạn, việc gia đình đột xuất,…) không thể tham dự thi giữa kỳ thì làm đơn trình bày cùng các minh chứng, P.ĐTĐH xem xét v...
+🤖 AI Answer: Sinh viên cần làm đơn trình bày lý do xin hoãn thi giữa kỳ kèm theo các minh chứng hợp lệ. Sau đó, Phòng Đào tạo Đại học sẽ xem xét và quyết định.
+-> Đánh giá: Đạt (Top-1, Điểm: 2/2)
+
+--- [Query 2] (Tra cứu thẩm quyền/bộ phận) ---
+Câu hỏi: Bộ phận nào của Trường sẽ xem xét các trường hợp có lí do chính đáng để vắng thi giữa kỳ?
+Gold answer: P.ĐTĐH
+File kỳ vọng: quy-dinh-to-chuc-thi, quy-che-dao-tao-chinh-quy, quy-dinh-tieu-chuan-giang-vien
+Metadata filter: None
+Top-3 retrieved chunks:
+  1.    (Score: 0.5895) [quy-dinh-cong-tac-giao-trinh] 3. Nghiêm cấm các đối tượng có hành vi lưu trữ, sao chép, cắt ghép làm thay đổi nội dung học liệu điện tử, ghi hình và chỉnh sửa bài giảng trực tiếp, phát tán bài giảng có trong hệ...
+  2. ✅ [MATCH] (Score: 0.5881) [quy-che-dao-tao-chinh-quy] Trong trường hợp sinh viên có lý do chính đáng (ốm đau, tai nạn, việc gia đình đột xuất,…) không thể tham dự thi giữa kỳ thì làm đơn trình bày cùng các minh chứng, P.ĐTĐH xem xét v...
+  3. ✅ [MATCH] (Score: 0.5879) [quy-che-dao-tao-chinh-quy] Khi CBHD hoặc CBPB đánh giá đề tài của sinh viên không đủ điều kiện để bảo vệ trước hội đồng (điểm đánh giá dưới 5), Khoa xem xét các biện pháp xử lý sau và quyết định:  –	Thảo luậ...
+🤖 AI Answer: Bộ phận Đào tạo Đại học (P.ĐTĐH) sẽ xem xét các trường hợp có lý do chính đáng để vắng thi giữa kỳ.
+-> Đánh giá: Đạt (Top-2, Điểm: 1/2)
+
+--- [Query 3] (Tra số liệu thời hạn) ---
+Câu hỏi: Thời hạn lưu trữ đề thi các môn học hệ đại học chính quy của Trường là bao lâu?
+Gold answer: 9 năm
+File kỳ vọng: quy-dinh-khoa-luan-tot-nghiep, quy-dinh-to-chuc-thi, quy-dinh-tieu-chuan-giang-vien
+Metadata filter: None
+Top-3 retrieved chunks:
+  1.    (Score: 0.6401) [quy-che-van-bang-chung-chi] Bước 7: Lưu trữ. Lưu trữ bản chính bảng điểm thi và các hồ sơ liên quan. Thời gian thực hiện là 60 ngày kể từ ngày thi của môn học (tính cả ngày nghỉ). Đon vị thực hiện là Phòng Đà...
+  2. ✅ [MATCH] (Score: 0.6085) [quy-dinh-to-chuc-thi] Loại hồ sơ: Danh sách phúc khảo của sinh viên kèm kết quả phúc khảo. Hình thức lưu trữ: bản giấy. Đơn vị lưu trữ: Phòng Đào tạo Đại học. Thời hạn lưu trữ: vĩnh viễn. Loại hồ sơ: Sổ...
+  3. ✅ [MATCH] (Score: 0.6024) [quy-dinh-to-chuc-thi] Bước 7: Lưu trữ. Lưu trữ bản chính bảng điểm thi và các hồ sơ liên quan. Thời gian thực hiện là 60 ngày kể từ ngày thi của môn học (tính cả ngày nghỉ). Đon vị thực hiện là Phòng Đà...
+🤖 AI Answer: Thời hạn lưu trữ đề thi các môn học hệ đại học chính quy của Trường là 9 năm.
+-> Đánh giá: Đạt (Top-2, Điểm: 1/2)
+
+--- [Query 4] (Liệt kê hình thức) ---
+Câu hỏi: Sinh viên thuộc chương trình tài năng có các hình thức nào?
+Gold answer: chính thức và dự bị
+File kỳ vọng: quy-trinh-phan-cong-can-bo-coi-thi, quy-dinh-tieu-chuan-giang-vien, quy-che-dao-tao-chinh-quy, quy-dinh-to-chuc-thi
+Metadata filter: None
+Top-3 retrieved chunks:
+  1. ✅ [MATCH] (Score: 0.6985) [quy-dinh-tieu-chuan-giang-vien] Điều  2.	Giải thích từ ngữ Sinh viên thuộc chương trình tài năng có 02 hình thức là chính thức và dự bị, nằm trong tổng chỉ tiêu của chương trình: -	Sinh viên chính thức: đảm bảo đ...
+  2. ✅ [MATCH] (Score: 0.6985) [quy-dinh-to-chuc-thi] Điều  2.	Giải thích từ ngữ Sinh viên thuộc chương trình tài năng có 02 hình thức là chính thức và dự bị, nằm trong tổng chỉ tiêu của chương trình: -	Sinh viên chính thức: đảm bảo đ...
+  3. ✅ [MATCH] (Score: 0.6985) [quy-trinh-phan-cong-can-bo-coi-thi] Điều  2.	Giải thích từ ngữ Sinh viên thuộc chương trình tài năng có 02 hình thức là chính thức và dự bị, nằm trong tổng chỉ tiêu của chương trình: -	Sinh viên chính thức: đảm bảo đ...
+🤖 AI Answer: Sinh viên thuộc chương trình tài năng có hai hình thức: chính thức và dự bị.
+-> Đánh giá: Đạt (Top-1, Điểm: 2/2)
+
+--- [Query 5] (Tra cứu thuật ngữ/tên gọi) ---
+Câu hỏi: Trong các thành phần điểm của điểm môn học thì điểm giữa kỳ có tên gọi khác là gì?
+Gold answer: điểm thi giữa học phần
+File kỳ vọng: quy-dinh-khoa-luan-tot-nghiep, quy-che-dao-tao-chinh-quy, quy-dinh-day-hoc-truc-tuyen
+Metadata filter: None
+Top-3 retrieved chunks:
+  1. ✅ [MATCH] (Score: 0.6498) [quy-dinh-khoa-luan-tot-nghiep] Điểm tổng hợp đánh giá môn học (gọi tắt là điểm môn học) là điểm kiểm tra xuyên suốt quá trình học tập bao gồm điểm quá trình (chuyên cần), điểm thực hành, điểm thi giữa học phần (...
+  2. ✅ [MATCH] (Score: 0.6393) [quy-dinh-day-hoc-truc-tuyen] Điểm tổng hợp đánh giá môn học (gọi tắt là điểm môn học) là điểm kiểm tra xuyên suốt quá trình học tập bao gồm điểm quá trình (chuyên cần), điểm thực hành, điểm thi giữa học phần (...
+  3. ✅ [MATCH] (Score: 0.6219) [quy-che-dao-tao-chinh-quy] Điểm tổng hợp đánh giá môn học (gọi tắt là điểm môn học) là điểm kiểm tra xuyên suốt quá trình học tập bao gồm điểm quá trình (chuyên cần), điểm thực hành, điểm thi giữa học phần (...
+🤖 AI Answer: Điểm giữa kỳ có tên gọi khác là điểm thi giữa học phần.
+-> Đánh giá: Đạt (Top-1, Điểm: 2/2)
+
+================================================================
+TỔNG KẾT: 8/10 điểm benchmark
+================================================================

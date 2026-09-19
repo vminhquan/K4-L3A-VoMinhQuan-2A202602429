@@ -20,3 +20,8 @@ src_w_solution/
 
 # Instructor-only notes (chứa gợi ý/đáp án chấm bài, không public cho học viên)
 docs/INSTRUCTOR_GUIDE.md
+
+# Cache & Local Data
+.embedding_cache.json
+*.embedding_cache.json
+
