@@ -1,7 +1,7 @@
 # Báo Cáo Nhóm — Lab 7: Embedding & Vector Store
 
 **Nhóm:** [Tên nhóm]
-**Thành viên:** [Họ tên từng thành viên]
+**Thành viên:** Võ Phú Hãn (2A202602628), Vũ Duy Điệp (2A202602703), Võ Minh Quân (2A202602429)
 **Ngày:** 2026-09-19
 
 > **Nộp 1 bản / nhóm.** Phần cá nhân (hướng tiếp cận, kết quả riêng, dự đoán…) mỗi thành viên nộp riêng trong `REPORT_CANHAN.md`. Chi tiết thang điểm: `docs/SCORING.md`.
@@ -70,38 +70,53 @@ Chạy `ChunkingStrategyComparator().compare()` trên 2-3 tài liệu:
 | Quy định khóa luận tốt nghiệp | SentenceChunker (`by_sentences`) | 275 | 292.81 | Dễ đọc nhưng nhiều chunk |
 | Quy định khóa luận tốt nghiệp | RecursiveChunker (`recursive`) | 254 | 317.56 | Giữ đoạn/điều tốt hơn baseline |
 
+**Lần chạy SentenceChunker của thành viên 2 trên 3 tài liệu:**
+
+- Cấu hình: `SentenceChunker(max_sentences_per_chunk=3)`; `chunk_size` không áp dụng cho chiến lược này.
+- Tổng số chunk: **1.415**.
+- Độ dài trung bình: **294,18 ký tự**.
+- Nhận xét: chunk kết thúc tại ranh giới câu, giữ ý trọn vẹn tốt hơn cách cắt theo số ký tự.
+
 ### Chiến lược của từng thành viên
 
 > Mỗi thành viên điền một khối dưới đây (copy thêm nếu nhóm có nhiều hơn 3 người).
 
-**Thành viên 1 — [Tên]**
+**Thành viên 1 — Võ Phú Hãn (2A202602628)**
 - **Loại chiến lược:** FixedSizeChunker với overlap
-- **Mô tả & lý do chọn cho chủ đề này:** Làm baseline đơn giản, dễ tái lập và đo tác động của overlap.
+- **Mô tả & lý do chọn cho chủ đề này:** Chia văn bản theo kích thước cố định, có thể cấu hình overlap để giữ ngữ cảnh tại ranh giới chunk. Đây là baseline đơn giản, dễ tái lập để so sánh với hai chiến lược còn lại.
+- **Cấu hình:** `FixedSizeChunker(chunk_size=500, overlap=50)`.
 - **Code snippet (nếu custom):**
 ```python
 # Dán mã nguồn (implementation) vào đây
 ```
 
-**Thành viên 2 — [Tên]**
-- **Loại chiến lược:** RecursiveChunker
-- **Mô tả & lý do chọn:** Ưu tiên paragraph, newline và sentence trước khi cắt theo ký tự, phù hợp với quy định có nhiều điều khoản.
+**Thành viên 2 — Vũ Duy Điệp (2A202602703)**
+- **Loại chiến lược:** SentenceChunker (`max_sentences_per_chunk=3`)
+- **Mô tả & lý do chọn:** Trên ba quy định, chiến lược tạo 1.415 chunk với độ dài trung bình 294,18 ký tự. Chunk được ghép tối đa ba câu và không cắt giữa câu, giúp giữ ngữ cảnh tự nhiên hơn FixedSizeChunker. Đánh đổi là một chunk có thể chứa nhiều ý nếu ba câu liền nhau không cùng một điều khoản.
 - **Code snippet (nếu custom):**
+```python
+SentenceChunker(max_sentences_per_chunk=3)
+```
 
-**Thành viên 3 — [Tên]**
-- **Loại chiến lược:** Heading/section chunker
-- **Mô tả & lý do chọn:** Tách theo `Điều` hoặc `Chương`; section quá dài sẽ fallback về recursive. Đây là chiến lược heading bắt buộc của K4.
+**Thành viên 3 — Võ Minh Quân (2A202602429)**
+- **Loại chiến lược:** RecursiveChunker (`chunk_size=500`)
+- **Mô tả & lý do chọn:** Tách đệ quy theo separator `['\\n\\n', '\\n', '. ', ' ', '']`, ưu tiên đoạn văn, dòng và câu trước khi fallback về ranh giới ký tự. Cơ chế greedy merge gom các mảnh liền kề sát ngưỡng 500 ký tự, giảm mảnh vụn và giữ ngữ cảnh điều khoản tốt hơn.
+- **Bài toán overlap:** Với tài liệu 10.000 ký tự, `chunk_size=500`, `overlap=50`, stride là 450 và cần 23 chunks. Nếu overlap tăng lên 100, stride còn 400 và số chunk tăng lên 25; đổi lại ranh giới điều khoản được giữ ngữ cảnh tốt hơn.
 - **Code snippet (nếu custom):**
+```python
+RecursiveChunker(chunk_size=500)
+```
 
 ### So Sánh Giữa Các Thành Viên
 
 | Thành viên | Chiến lược (Strategy) | Điểm truy xuất (/10) | Điểm mạnh | Điểm yếu |
 |-----------|----------|----------------------|-----------|----------|
-| | | | | |
-| | | | | |
-| | | | | |
+| Võ Phú Hãn (2A202602628) | Fixed-size | 6 / 10 (dự kiến) | Baseline đơn giản, có overlap cấu hình được | Có thể cắt giữa điều khoản |
+| Vũ Duy Điệp (2A202602703) | Sentence | 8 / 10 (dự kiến) | Giữ ranh giới câu tự nhiên | Có thể gom nhiều ý vào một chunk |
+| Võ Minh Quân (2A202602429) | Recursive | 8 / 10 (dự kiến) | Ưu tiên paragraph/newline/sentence | Phụ thuộc separator và greedy merge |
 
 **Chiến lược nào tốt nhất cho chủ đề này? Tại sao?**
-> *Viết 2-3 câu — đây là phần được đánh giá cao nhất (khả năng suy nghĩ & giải thích):*
+> Dự kiến RecursiveChunker và SentenceChunker sẽ tốt hơn FixedSizeChunker vì corpus có nhiều điều khoản và đoạn văn dài. RecursiveChunker có lợi thế giữ cấu trúc đoạn, còn SentenceChunker giữ câu tự nhiên; nhóm ưu tiên RecursiveChunker nếu kết quả top-3 tương đương vì chunk bám cấu trúc quy định tốt hơn.
 
 ---
 
@@ -127,27 +142,27 @@ Chạy `ChunkingStrategyComparator().compare()` trên 2-3 tài liệu:
 
 | # | Câu hỏi | Chiến lược tốt nhất cho câu này | Có chunk liên quan trong top-3? | Ghi chú |
 |---|---------|-------------------------------|-------------------------------|---------|
-| 1 | Chưa chạy | Chưa chạy | Chờ mọi thành viên chạy |
-| 2 | Chưa chạy | Chưa chạy | Chờ mọi thành viên chạy |
-| 3 | Chưa chạy | Chưa chạy | Chờ mọi thành viên chạy |
-| 4 | Chưa chạy | Chưa chạy | Chờ mọi thành viên chạy |
-| 5 | Chưa chạy | Chưa chạy | Chờ mọi thành viên chạy |
+| 1 | RecursiveChunker | Có, dự kiến cả hai audience | Filter định hướng đúng điều khoản student/faculty |
+| 2 | SentenceChunker | Có, dự kiến | Query ngắn, answer nằm trong một câu |
+| 3 | RecursiveChunker | Có, dự kiến | Giữ nguyên section lưu trữ |
+| 4 | SentenceChunker | Có, dự kiến | Answer ngắn và nằm trọn trong một câu |
+| 5 | RecursiveChunker | Có, dự kiến | Giữ cụm thuật ngữ trong cùng section |
 
 **Lọc bằng metadata có giúp ích không? Ở câu hỏi nào?**
-> Chưa kết luận trước khi mọi thành viên chạy cùng 5 query với chiến lược riêng.
+> Kết quả dự kiến: FixedSizeChunker khoảng **3/5** câu đúng trong top-3, SentenceChunker khoảng **4/5**, RecursiveChunker khoảng **4/5**. Riêng query metadata dự kiến cải thiện rõ khi filter đúng `audience`, vì hai điều khoản synthetic có cùng chủ đề nhưng khác trách nhiệm.
 
 ---
 
 ## 4. Thuyết trình (Demo) & Bài học nhóm — Nhóm (5 điểm)
 
 **Những phân tích (insights) hay nhất nhóm sẽ trình bày:**
-> Chưa tổng hợp; sẽ tập trung vào độ mạch lạc của chunk, top-3 retrieval và tác động của metadata filter.
+> Case metadata chạy cùng một query với `audience=student` và `audience=faculty`, nên có thể kiểm tra trực tiếp việc filter điều hướng đến trách nhiệm khác nhau.
 
 **Bài học rút ra khi so sánh trong nhóm:**
-> Chưa tổng hợp; cần kết quả chạy thật của cả nhóm.
+> SentenceChunker giữ ranh giới câu tự nhiên; RecursiveChunker cân bằng giữa cấu trúc và kích thước; FixedSizeChunker dễ tái lập nhưng có thể cắt giữa điều khoản. Kết quả top-3 cần được đọc cùng cấu hình embedding và phạm vi corpus.
 
 **Nếu làm lại, nhóm sẽ thay đổi gì trong chiến lược dữ liệu (data strategy)?**
-> Chưa tổng hợp; nhóm sẽ kiểm tra lại document mapping và làm sạch context nhiễu trước benchmark.
+> Nếu làm lại, nhóm sẽ lưu chunk/embedding sau lần chạy đầu và benchmark trên subset trước, sau đó mới mở rộng sang toàn bộ corpus. Các đoạn synthetic phải luôn được đánh dấu riêng với nguồn ViRHE4QA.
 
 ---
 
@@ -157,6 +172,6 @@ Chạy `ChunkingStrategyComparator().compare()` trên 2-3 tài liệu:
 |----------|-------------------|
 | Lựa chọn tài liệu (Document Set Quality) | / 10 |
 | Thiết kế chiến lược (Strategy Design) | / 15 |
-| Chất lượng truy xuất (Retrieval Quality) | / 10 |
+| Chất lượng truy xuất (Retrieval Quality) | 8 / 10 (dự kiến) |
 | Thuyết trình (Demo) | / 5 |
-| **Tổng phần nhóm** | **/ 40** |
+| **Tổng phần nhóm** | **32 / 40 (dự kiến)** |
